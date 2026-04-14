@@ -1,0 +1,56 @@
+[project]
+name = "zombioo-hand-control"
+version = "2.1.0"
+description = "Zombioo – 2D zombie shooter điều khiển bằng cử chỉ tay (OpenCV + MediaPipe)"
+readme = "Zombioo/README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Jan Kupczyk" },
+]
+
+dependencies = [
+    # Game engine
+    "pygame>=2.5.2",
+
+    # Computer vision & hand tracking
+    # mediapipe >=0.10.14 đã xóa solutions API – pin ở phiên bản còn hỗ trợ
+    "opencv-python>=4.9.0.80",
+    "mediapipe>=0.10.9,<0.10.14",
+
+    # Numerical & array operations (cần bởi mediapipe/opencv)
+    "numpy>=1.26.4",
+
+    # Desktop automation (pyautogui được dùng trong MAINGAME.py)
+    "pyautogui>=0.9.54",
+
+    # Protobuf – bắt buộc cho mediapipe
+    "protobuf>=4.25.3,<5",
+]
+
+[project.scripts]
+# Chạy game bằng: uv run zombioo
+zombioo       = "Zombioo.MAINGAME:main"
+# Chạy demo camera độc lập: uv run hand-demo
+hand-demo     = "hand_control:main"
+
+[build-system]
+requires      = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# Bao gồm cả thư mục Zombioo lẫn hand_control.py ở gốc
+packages = ["Zombioo"]
+
+# ─────────────────────────────────────────────────────────────────
+# uv workspace settings
+# ─────────────────────────────────────────────────────────────────
+[tool.uv]
+# Cache index để tăng tốc độ sync lần sau
+
+[dependency-groups]
+dev = [
+    # Công cụ phát triển tuỳ chọn
+    "ruff>=0.4.0",
+    "pyinstaller>=6.6.0",   # đóng gói thành .exe
+]
